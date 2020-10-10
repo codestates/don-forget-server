@@ -24,5 +24,5 @@ Password_Question.init(
         sequelize: database, // this bit is important
       }
 )
-
+//create table function
 Password_Question.sync({ force: false }).then(() => console.log("Password_Question table connected"));
