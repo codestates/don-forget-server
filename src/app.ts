@@ -27,7 +27,9 @@ const sessionStorage = new mysqlStore(options);
 
 app.use(cookieparser());
 app.use(bodyparser.json());
-app.use(cors());
+app.use(cors({
+  origin : "*"
+}));
 app.use(
   session({
     secret: "donforget",
@@ -35,11 +37,11 @@ app.use(
     saveUninitialized: true,
     //testing --start
     store: sessionStorage,
-    // cookie: {
-    //   domain : 'http://get-up-mate.s3-website.ap-northeast-2.amazonaws.com/',
-    //   expires : new Date(Date.now() + (20000)),
-    //   // secure : true
-    // }
+    cookie: {
+      domain : 'http://don-forget.s3-website.ap-northeast-2.amazonaws.com/',
+      expires : new Date(Date.now() + (20000)),
+      // secure : true
+    }
     // --end
   })
 );
