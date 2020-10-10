@@ -7,16 +7,42 @@ import { User } from './models/user';
 import { Event } from './models/event-type';
 import { Password_Question } from './models/password-question';
 import { Schedule } from './models/schedule';
+const app = express();
+const session = require('express-session');
 const cors = require('cors')
 const cookieparser = require('cookie-parser');
 const bodyparser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const app = express();
+const mysqlStore = require('express-mysql-session')(session);
+const options = {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+};
+const sessionStorage = new mysqlStore(options);
+
 app.use(cookieparser());
 app.use(bodyparser.json());
 app.use(cors());
+app.use(
+  session({
+    secret: "donforget",
+    resave: false,
+    saveUninitialized: true,
+    //testing --start
+    store: sessionStorage,
+    // cookie: {
+    //   domain : 'http://get-up-mate.s3-website.ap-northeast-2.amazonaws.com/',
+    //   expires : new Date(Date.now() + (20000)),
+    //   // secure : true
+    // }
+    // --end
+  })
+);
 
 app.get('/', (request:Request, response:Response, next: NextFunction) => {
   response.send('hello');
