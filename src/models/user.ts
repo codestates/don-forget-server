@@ -1,7 +1,7 @@
 import { Sequelize, Model, DataTypes, BuildOptions } from "sequelize";
 import { database } from "../config/database";
 import { Password_Question } from './password-question';
-import { Schedule } from './schedule';
+import bcrypt from 'bcrypt';
 
 export class User extends Model {
   public id!: number;
@@ -45,6 +45,15 @@ User.init(
       {
         tableName: "user",
         sequelize: database, // this bit is important
+        // hooks: {
+        //   beforeCreate: function(user: User) {
+        //     if(user.password) {
+        //       const saltRounds = 10;
+        //       const salt = bcrypt.genSaltSync(saltRounds);
+        //       user.password = bcrypt.hashSync(user.password, salt);
+        //     }
+        //   }
+        // }
       }
 )
 
