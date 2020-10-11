@@ -57,26 +57,26 @@ app.use("/search", searchRouter);
 
 app.listen(5000,async ()=>{
   console.log('start');
-  try {
-    await database.authenticate();
-    console.log('Connection has been established successfully.');
-    await User.findAll()
-          .then(result => console.log('User connected'))
-          .catch(err => console.error(err));
+  // try {
+  //   await database.authenticate();
+  //   console.log('Connection has been established successfully.');
+  //   await User.findAll()
+  //         .then(result => console.log('User connected'))
+  //         .catch(err => console.error(err));
 
-    await Event.findAll()
-    .then(result => console.log('Event connected'))
-    .catch(err => console.error(err));
+  //   await Event.findAll()
+  //   .then(result => console.log('Event connected'))
+  //   .catch(err => console.error(err));
 
-    await Password_Question.findAll()
-    .then(result => console.log('Password_Question connected'))
-    .catch(err => console.error(err));
+  //   await Password_Question.findAll()
+  //   .then(result => console.log('Password_Question connected'))
+  //   .catch(err => console.error(err));
 
-    await Schedule.findAll()
-    .then(result => console.log('Schedule connected'))
-    .catch(err => console.error(err));
+  //   await Schedule.findAll()
+  //   .then(result => console.log('Schedule connected'))
+  //   .catch(err => console.error(err));
 
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
+  // } catch (error) {
+  //   console.error('Unable to connect to the database:', error);
+  // }
 })
