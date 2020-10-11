@@ -20,7 +20,7 @@ export async function findpassword_stepone (req:Request, res:Response) {
     }
   });
   const password_answer = get_password_question_id?.getDataValue('password_answer');
-  console.log("password_answer:", password_answer)
+  const userid = get_password_question_id?.getDataValue('id');
 
   const get_password_question_type = await Password_Question.findOne({
     where: {
@@ -28,11 +28,11 @@ export async function findpassword_stepone (req:Request, res:Response) {
     }
   });
   const password_question = get_password_question_type?.getDataValue('type');
-  console.log("password_question", password_question)
 
   const result:any = {};
   result["password_answer"] = password_answer;
   result["password_question"] = password_question;
+  result["id"] = userid;
 
   if(password_answer && password_question) {
     res.status(200).send(result)
