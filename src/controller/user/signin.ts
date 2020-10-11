@@ -17,37 +17,67 @@ export async function signin (req:Request, res:Response) {
       email: email
     }
   })
-  
-  await bcrypt.compare(password, hash_password?.getDataValue('password'), (err, result) => {
-    if(err) {
-      console.log(err);
-      res.status(401).send("Unauthorized")
-    } else {
-      // result = true;
-      (async function findUser() {
-        const user = await User.findOne({
-          where: {
-            email: email
-          }
-        })
-        if(user === null) {
-          res.status(401).send("Unauthorized")
-        } else {
-          console.log("user:", user?.getDataValue('id'))
-          console.log("session:", session)
-          session.userid = user?.getDataValue('id');
-          session.name = user?.getDataValue('name');
-          session.email = user?.getDataValue('email');
-          session.password_answer = user?.getDataValue('password_answer');
-          session.save(function () {
-            res.status(200).json({
-              "id": user?.getDataValue('id'),
-              "name": user?.getDataValue('name'),
-              "email": user?.getDataValue('email')
-            })
-          })
+
+  const check = await bcrypt.compare(password, hash_password?.getDataValue('password'));
+  if(check === true) {
+    (async function findUser() {
+      const user = await User.findOne({
+        where: {
+          email: email
         }
-      })();
-    }
-  })
+      })
+      if(user === null) {
+        res.status(401).send("Unauthorized")
+      } else {
+        console.log("user:", user?.getDataValue('id'))
+        console.log("session:", session)
+        session.userid = user?.getDataValue('id');
+        session.name = user?.getDataValue('name');
+        session.email = user?.getDataValue('email');
+        session.password_answer = user?.getDataValue('password_answer');
+        session.save(function () {
+          res.status(200).json({
+            "id": user?.getDataValue('id'),
+            "name": user?.getDataValue('name'),
+            "email": user?.getDataValue('email')
+          })
+        })
+      }
+    })();
+  } else {
+    res.status(401).send("Unauthorized");
+  }
+  
+  // await bcrypt.compare(password, hash_password?.getDataValue('password'), (err, result) => {
+  //   if(err) {
+  //     console.log(err);
+  //     res.status(401).send("Unauthorized")
+  //   } else {
+  //     // result = true;
+  //     (async function findUser() {
+  //       const user = await User.findOne({
+  //         where: {
+  //           email: email
+  //         }
+  //       })
+  //       if(user === null) {
+  //         res.status(401).send("Unauthorized")
+  //       } else {
+  //         console.log("user:", user?.getDataValue('id'))
+  //         console.log("session:", session)
+  //         session.userid = user?.getDataValue('id');
+  //         session.name = user?.getDataValue('name');
+  //         session.email = user?.getDataValue('email');
+  //         session.password_answer = user?.getDataValue('password_answer');
+  //         session.save(function () {
+  //           res.status(200).json({
+  //             "id": user?.getDataValue('id'),
+  //             "name": user?.getDataValue('name'),
+  //             "email": user?.getDataValue('email')
+  //           })
+  //         })
+  //       }
+  //     })();
+  //   }
+  // })
 }
