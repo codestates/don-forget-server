@@ -2,6 +2,7 @@ import express, {Request, Response, NextFunction} from 'express';
 import userRouter from "./router/userRouter";
 import scheduleRouter from "./router/scheduleRouter";
 import searchRouter from "./router/searchRouter";
+import socialLoginRouter from './router/socialLoginRouter';
 import { database } from './config/database';
 import { User } from './models/user';
 import { Event } from './models/event-type';
@@ -53,6 +54,7 @@ app.get('/', (request:Request, response:Response, next: NextFunction) => {
 app.use("/user", userRouter);
 app.use("/schedule", scheduleRouter);
 app.use("/search", searchRouter);
+app.use("/oauth", socialLoginRouter);
 
 
 app.listen(5000,async ()=>{
