@@ -54,6 +54,8 @@
     "express-session": "^1.17.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "passport-kakao": "^1.0.0",
+    "passport-naver": "^1.0.6",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
