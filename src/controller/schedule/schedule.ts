@@ -21,6 +21,7 @@ async function get (req:Request, res:Response) {
         list.push({
             "id" : element.getDataValue('id'),
             "date" : element.getDataValue('date'),
+            "event_id" : element.getDataValue('EventId'),
             "event_type" : element.getDataValue('EventId'),
             "event_target" : element.getDataValue('event_target'),
             "gift" : element.getDataValue('gift'),
