@@ -38,7 +38,7 @@ app.use(
     //testing --start
     store: sessionStorage,
     cookie: {
-      domain : 'http://don-forget.s3-website.ap-northeast-2.amazonaws.com/',
+      domain : 'https://www.don-forget.com',
       expires : new Date(Date.now() + (20000)),
       // secure : true
     }
