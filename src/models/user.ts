@@ -39,7 +39,7 @@ User.init(
         // },
         password_answer: {
           type: new DataTypes.STRING(128),
-          allowNull: false,
+          allowNull: true,
         },
       },
       {
