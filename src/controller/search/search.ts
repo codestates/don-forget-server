@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { Schedule } from '../../models/schedule';
-import { Event } from '../../models/event-type';
-import { Model } from 'sequelize';
-import { getModels } from 'sequelize-typescript';
 
 /*
 검색어: event_target(from schedule table) or type(from event_type)
@@ -16,17 +13,17 @@ export async function search (req:Request, res:Response) {
   const { data } = req.body;
   const id = req.params.id;
 
-  const type_id = await Event.findOne({
+  const find_type = await Schedule.findOne({
     where: {
       type: data
     }
   })
   
-  if(type_id) {
+  if(find_type) {
     await Schedule.findAll({
       where: {
         UserId: id,
-        EventId: type_id?.getDataValue('id')
+        type: find_type?.getDataValue('type')
       }
     })
     .then(data => {
@@ -36,7 +33,7 @@ export async function search (req:Request, res:Response) {
         res.status(404).send("no results");
       }
     })
-  } else if(type_id === null) {
+  } else if(find_type === null) {
     await Schedule.findAll({
       where: {
         UserId: id,

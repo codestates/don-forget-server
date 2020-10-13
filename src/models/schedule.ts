@@ -12,7 +12,7 @@ export class Schedule extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
-//
+
 Schedule.init(
     {
         id: {

@@ -1,5 +1,4 @@
 import {Request, Response} from 'express';
-import { Event } from '../../models/event-type';
 import { Schedule } from '../../models/schedule';
 
 
@@ -21,46 +20,45 @@ async function get (req:Request, res:Response) {
         list.push({
             "id" : element.getDataValue('id'),
             "date" : element.getDataValue('date'),
-            "event_id" : element.getDataValue('EventId'),
-            "event_type" : element.getDataValue('EventId'),
+            "type" : element.getDataValue('type'),
             "event_target" : element.getDataValue('event_target'),
             "gift" : element.getDataValue('gift'),
         })
     })
 
     //event_type을 아이디에서 str로 바꿔주기
-    async function change_id_to_type(list:any[]) {
-        for(let i = 0; i < list.length; i++){
-            const element = list[i];
-            await Event.findOne({
-                where : {
-                    id : element.event_type
-                }
-            }).then(result => {
-                element.event_type = result?.getDataValue('type');
-            })
-        }
-    }
+    // async function change_id_to_type(list:any[]) {
+    //     for(let i = 0; i < list.length; i++){
+    //         const element = list[i];
+    //         await Event.findOne({
+    //             where : {
+    //                 id : element.event_type
+    //             }
+    //         }).then(result => {
+    //             element.event_type = result?.getDataValue('type');
+    //         })
+    //     }
+    // }
 
-    await change_id_to_type(list);
+    // await change_id_to_type(list);
 
-    res.send(list);
+    res.status(200).send(list);
 }
 
 //version1 compelte
 //나중에 params랑 session 비교하는 것도 넣자
 async function post (req:Request, res:Response) {
-    const event = await Event.findOne({
-        where : {
-            type : req.body.event_type
-        }
-    })
+    // const event = await Event.findOne({
+    //     where : {
+    //         type : req.body.event_type
+    //     }
+    // })
     const newSchedule = await Schedule.create({
         date : req.body.date,
         event_target : req.body.event_target,
         gift : req.body.gift,
         UserId : req.params.id,
-        EventId : event?.getDataValue('id'),
+        type: req.body.type
     })
     console.log(newSchedule);
     await res.status(200).json({
@@ -74,25 +72,25 @@ async function put (req:Request, res:Response) {
     let schedule = await Schedule.findOne({
         where: {
             id : req.query.schedule_id,
-            EventId : req.query.event_id,
+            // EventId : req.query.event_id,
             UserId : req.params.id
         }
     })
     console.log('schedule : ',schedule);
 
     //스케줄 찾은 후 해당 스케줄의 event_type에 맞는 event table의 id값 가져오기
-    const event = await Event.findOne({
-        where: {
-            type : req.body.event_type
-        }
-    })
+    // const event = await Event.findOne({
+    //     where: {
+    //         type : req.body.event_type
+    //     }
+    // })
     
     //date,event_target,gift, EventId
     await schedule?.update({
         date : req.body.date,
         event_target : req.body.event_target,
         gift : req.body.gift,
-        EventId : event?.getDataValue('id')
+        type : req.body.event_type
     })
 
     res.send(schedule);
@@ -107,7 +105,7 @@ async function Delete (req:Request, res:Response) {
     await Schedule.destroy({
         where : {
             UserId : req.params.id,
-            EventId : req.query.event_id
+            id : req.query.schedule_id
         }
     })
     .then(result => res.send({ "message" : "successfully deleted" }))
