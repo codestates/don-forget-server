@@ -1,19 +1,18 @@
 import { Sequelize, Model, DataTypes, BuildOptions } from "sequelize";
 import { database } from "../config/database";
 import { User } from './user';
-import { Event } from './event-type';
 
 export class Schedule extends Model {
   public id!: number;
-  public name!: string;
-  public email!: string;
+  public date!: Date;
+  public event_target!: string;
   public password! : string;
-  public password_question_id! : string;
-  public password_answer! : string;
+  public gift! : string;
+  public type! : string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
-
+//
 Schedule.init(
     {
         id: {
@@ -33,14 +32,10 @@ Schedule.init(
           type: new DataTypes.STRING(128),
           allowNull: false,
         },
-        // user_id: {
-        //   type: new DataTypes.INTEGER,
-        //   allowNull: false,
-        // },
-        // event_type_id: {
-        //     type: new DataTypes.INTEGER,
-        //     allowNull: false,
-        // },
+        type: {
+          type: new DataTypes.STRING(128),
+          allowNull: false,
+        }
       },
       {
         tableName: "schedule",
@@ -50,8 +45,5 @@ Schedule.init(
 
 Schedule.belongsTo(User, { targetKey : "id" })
 User.hasMany(Schedule, { sourceKey : "id" })
-
-Schedule.belongsTo(Event, { targetKey : "id" })
-Event.hasMany(Schedule, { sourceKey : "id" })
 
 Schedule.sync({ force: false }).then(() => console.log("Schedule table connected"));
