@@ -4,8 +4,8 @@ const scheduleRouter = express.Router();
 
 scheduleRouter.get("/:id", get);
 scheduleRouter.post("/:id", post);
-scheduleRouter.put("/:id?event_id", put);
-scheduleRouter.delete("/:id?event_id", Delete);
+scheduleRouter.put("/:id", put);
+scheduleRouter.delete("/:id", Delete);
 
 
 export = scheduleRouter;
