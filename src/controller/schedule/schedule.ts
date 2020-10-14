@@ -92,7 +92,7 @@ async function put (req:Request, res:Response) {
         date : req.body.date,
         event_target : req.body.event_target,
         gift : req.body.gift,
-        type : req.body.event_type,
+        type : req.body.type,
         giveandtake : req.body.giveandtake
     })
 
