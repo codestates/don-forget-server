@@ -30,7 +30,7 @@ export async function search (req:Request, res:Response) {
       if (data.length !== 0) {
         res.status(200).send(data);
       } else {
-        res.status(404).send("no results");
+        res.send(data);
       }
     })
   } else if(find_type === null) {
@@ -44,10 +44,10 @@ export async function search (req:Request, res:Response) {
       if(data.length !== 0) {
         res.status(200).send(data);
       } else {
-        res.status(404).send("no results");
+        res.send(data);
       }
     })
   } else {
-    res.status(404).send("no results");
+    res.send(data);
   }
 }
