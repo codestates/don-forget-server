@@ -9,6 +9,7 @@ export class Schedule extends Model {
   public password! : string;
   public gift! : string;
   public type! : string;
+  public giveandtake! : string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -33,6 +34,10 @@ Schedule.init(
           allowNull: false,
         },
         type: {
+          type: new DataTypes.STRING(128),
+          allowNull: false,
+        },
+        giveandtake: {
           type: new DataTypes.STRING(128),
           allowNull: false,
         }
