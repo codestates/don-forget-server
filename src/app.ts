@@ -32,7 +32,7 @@ const sessionStorage = new mysqlStore(options);
 app.use(cookieparser());
 app.use(bodyparser.json());
 app.use(cors({
-  origin : "*",
+  origin : "https://www.don-forget.com",
   credentials: true
 }));
 app.use(
@@ -43,7 +43,7 @@ app.use(
     //testing --start
     store: sessionStorage,
     cookie: {
-      domain : 'https://www.don-forget.com',
+      domain : 'https://don-forget-server.com',
       expires : new Date(Date.now() + (20000)),
       secure: false,
       // secure : true
