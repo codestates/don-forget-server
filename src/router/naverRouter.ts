@@ -15,8 +15,8 @@ naverRouter.get('/naver', passport.authenticate('naver'),
 naverRouter.get('/naver/callback', passport.authenticate('naver', { failureRedirect: '/naver'}),
   (req:Request, res:Response) => {
     console.log('-----------req:', req.cookies)
-    res.cookie('session_id', "id")
-    res.redirect('http://localhost:3000/mypage')
+    res.cookie('session_id', "id", { sameSite: 'none', secure: true, httpOnly: false})
+    res.redirect('https://www.don-forget.com')
   }
 );
 
