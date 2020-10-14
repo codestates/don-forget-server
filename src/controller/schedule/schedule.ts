@@ -23,6 +23,7 @@ async function get (req:Request, res:Response) {
             "type" : element.getDataValue('type'),
             "event_target" : element.getDataValue('event_target'),
             "gift" : element.getDataValue('gift'),
+            "giveandtake" : element.getDataValue('giveandtake')
         })
     })
 
@@ -58,7 +59,8 @@ async function post (req:Request, res:Response) {
         event_target : req.body.event_target,
         gift : req.body.gift,
         UserId : req.params.id,
-        type: req.body.type
+        type: req.body.type,
+        giveandtake: req.body.giveandtake
     })
     console.log(newSchedule);
     await res.status(200).json({
@@ -90,7 +92,8 @@ async function put (req:Request, res:Response) {
         date : req.body.date,
         event_target : req.body.event_target,
         gift : req.body.gift,
-        type : req.body.event_type
+        type : req.body.event_type,
+        giveandtake : req.body.giveandtake
     })
 
     res.send(schedule);
