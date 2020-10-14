@@ -23,15 +23,15 @@ User.init(
         },
         name: {
           type: new DataTypes.STRING(128),
-          allowNull: false,
+          allowNull: true,
         },
         email: {
           type: new DataTypes.STRING(128),
-          allowNull: false,
+          allowNull: true,
           },
         password: {
           type: new DataTypes.STRING(128),
-          allowNull: false,
+          allowNull: true,
         },
         // password_question_id: {
         //   type: new DataTypes.STRING(128),
