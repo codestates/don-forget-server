@@ -17,43 +17,43 @@ export async function signin (req:Request, res:Response) {
   const session = req!.session!;
   const hash_password = await User.findOne({
     where: {
-      email: email
+      email: `${email[0]}-${email[1]}`
     }
   })
 
   //소셜로그인의 경우
-  if(email === 'kakao' || email === 'naver'){
+  if(email[0] === 'kakao' || email[0] === 'naver'){
     //패스워드는 자신 이메일 기반으로 만듦
-    const encrypt_password_by_email = await bcrypt.hash(email, 10)
-    .then(async () => {
+    const encrypt_password_by_email = await bcrypt.hash(email[0], 10)
+    .then(async (result) => {
       if(hash_password === null){
         async function createUser() {
           await User.create({
             name: name,
-            email: email,
-            password: encrypt_password_by_email
+            email: `${email[0]}-${email[1]}`,
+            password: result
           })
-          .then(newUser => {
-            console.log("newUser:", newUser?.getDataValue('id'))
-            console.log("session:", session)
-            session.userid = newUser?.getDataValue('id');
-            session.name = newUser?.getDataValue('name');
-            session.email = newUser?.getDataValue('email');
-            session.password_answer = newUser?.getDataValue('password_answer');
-            session.save(function () {
-              res.json({
-                "id": newUser?.getDataValue('id'),
-                "name": newUser?.getDataValue('name'),
-                "email": newUser?.getDataValue('email')
-              })
-            })
-          })
+          // .then(newUser => {
+          //   console.log("newUser:", newUser?.getDataValue('id'))
+          //   console.log("session:", session)
+            // session.userid = newUser?.getDataValue('id');
+            // session.name = newUser?.getDataValue('name');
+            // session.email = newUser?.getDataValue('email');
+            // session.password_answer = newUser?.getDataValue('password_answer');
+            // session.save(function () {
+            //   res.json({
+            //     "id": newUser?.getDataValue('id'),
+            //     "name": newUser?.getDataValue('name'),
+            //     "email": newUser?.getDataValue('email')
+            //   })
+            // })
+          // })
         }
         await createUser();
       }
     })
     .then(async () => {
-      await bcrypt.compare(email, hash_password?.getDataValue('password'), (err, result) => {
+      await bcrypt.compare(email[0], hash_password?.getDataValue('password'), (err, result) => {
         if(err) {
           console.log(err);
           res.status(401).send("Unauthorized")
@@ -62,7 +62,7 @@ export async function signin (req:Request, res:Response) {
           (async function findUser() {
             const user = await User.findOne({
               where: {
-                email: email
+                email: `${email[0]}-${email[1]}`
               }
             })
             if(user === null) {
@@ -75,6 +75,7 @@ export async function signin (req:Request, res:Response) {
               session.email = user?.getDataValue('email');
               session.password_answer = user?.getDataValue('password_answer');
               session.save(function () {
+                res.setHeader('content-type', 'application/json');
                 res.status(200).json({
                   "id": user?.getDataValue('id'),
                   "name": user?.getDataValue('name'),
