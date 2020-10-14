@@ -7,7 +7,7 @@ const passport = require('passport');
 
 naverRouter.get('/naver', passport.authenticate('naver'), 
   (req:Request, res:Response) => {
-    res.writeHead(200, { 'Set-Cookie': 'session_id =req' });
+    res.cookie('session_id', "id")
     res.send();
   },
 );
@@ -15,7 +15,7 @@ naverRouter.get('/naver', passport.authenticate('naver'),
 naverRouter.get('/naver/callback', passport.authenticate('naver', { failureRedirect: '/naver'}),
   (req:Request, res:Response) => {
     console.log('-----------req:', req.cookies)
-    res.cookie('session_id', "id")
+    res.cookie('session_id', "id", { sameSite: 'none', secure: true, httpOnly: false})
     res.redirect('http://localhost:3000/mypage')
   }
 );
