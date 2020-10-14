@@ -35,6 +35,10 @@ Schedule.init(
         type: {
           type: new DataTypes.STRING(128),
           allowNull: false,
+        },
+        giveandtake: {
+          type: new DataTypes.STRING(128),
+          allowNull: false,
         }
       },
       {
