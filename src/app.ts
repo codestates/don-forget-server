@@ -32,7 +32,7 @@ const sessionStorage = new mysqlStore(options);
 app.use(cookieparser());
 app.use(bodyparser.json());
 app.use(cors({
-  origin : "https://www.don-forget.com",
+  origin : "*",
   credentials: true
 }));
 app.use(

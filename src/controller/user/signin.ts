@@ -74,7 +74,6 @@ export async function signin (req:Request, res:Response) {
   //일반로그인의 경우
   else{
     //입력한 비밀번호의 암호화를 씌우고, 이메일을 받아 기존 유저 있는지 확인한다.
-    
     //있으면 아이디 정보를 할당하고, 없으면 401을 보낸다.
     const websiteUser = await User.findOne({
       where : {
