@@ -57,7 +57,7 @@ async function post (req:Request, res:Response) {
     const newSchedule = await Schedule.create({
         date : req.body.date,
         event_target : req.body.event_target,
-        gift : req.body.gift,
+        gift : `${req.body.gift[0]}-${req.body.gift[1]}`,
         UserId : req.params.id,
         type: req.body.type,
         giveandtake: req.body.giveandtake
@@ -91,7 +91,7 @@ async function put (req:Request, res:Response) {
     await schedule?.update({
         date : req.body.date,
         event_target : req.body.event_target,
-        gift : req.body.gift,
+        gift : `${req.body.gift[0]}-${req.body.gift[1]}`,
         type : req.body.type,
         giveandtake : req.body.giveandtake
     })
