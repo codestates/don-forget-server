@@ -31,5 +31,7 @@ export async function expectNextCost (req:Request, res:Response) {
             ['date', 'ASC']
         ]
     }).catch(err => console.error(err));
+    
+    //3. 필요한 컬럼들을 뽑아오기
     res.send(schedule_list);
 }
