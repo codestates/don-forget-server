@@ -19,7 +19,7 @@ async function get (req:Request, res:Response) {
             "date" : element.getDataValue('date'),
             "type" : element.getDataValue('type'),
             "event_target" : element.getDataValue('event_target'),
-            "gift" : [element.getDataValue('gift').split(':')[0], element.getDataValue('gift').split(':')[1]],
+            "gift" : element.getDataValue('gift'),
             "giveandtake" : element.getDataValue('giveandtake')
         })
     })
