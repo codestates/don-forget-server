@@ -41,9 +41,13 @@ export async function statistics (req:Request, res:Response) {
         data.forEach(element => {
             const month = element.getDataValue('date').getMonth()+1;
             if(result[month] === undefined){
-                result[month] = [];
+                result[month] = {money : 0, gift : 0};
             }
-            result[month].push(element);
+            if(element.getDataValue('gift').split(':')[0] === "현금"){
+                result[month].money += parseInt(element.getDataValue('gift').split(':')[1])
+            }else{
+                result[month].gift += 1;
+            }
         })
         res.send(result);
     })
