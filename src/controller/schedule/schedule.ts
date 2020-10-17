@@ -1,9 +1,6 @@
 import {Request, Response} from 'express';
 import { Schedule } from '../../models/schedule';
 
-
-//검증 필요
-//완료
 async function get (req:Request, res:Response) {
 
     const userid = req.params.id;
@@ -26,23 +23,6 @@ async function get (req:Request, res:Response) {
             "giveandtake" : element.getDataValue('giveandtake')
         })
     })
-
-    //event_type을 아이디에서 str로 바꿔주기
-    // async function change_id_to_type(list:any[]) {
-    //     for(let i = 0; i < list.length; i++){
-    //         const element = list[i];
-    //         await Event.findOne({
-    //             where : {
-    //                 id : element.event_type
-    //             }
-    //         }).then(result => {
-    //             element.event_type = result?.getDataValue('type');
-    //         })
-    //     }
-    // }
-
-    // await change_id_to_type(list);
-
     res.status(200).send(list);
 }
 
@@ -57,7 +37,7 @@ async function post (req:Request, res:Response) {
     const newSchedule = await Schedule.create({
         date : req.body.date,
         event_target : req.body.event_target,
-        gift : `${req.body.gift[0]}-${req.body.gift[1]}`,
+        gift : `${req.body.gift[0]}:${req.body.gift[1]}`,
         UserId : req.params.id,
         type: req.body.type,
         giveandtake: req.body.giveandtake
@@ -91,7 +71,7 @@ async function put (req:Request, res:Response) {
     await schedule?.update({
         date : req.body.date,
         event_target : req.body.event_target,
-        gift : `${req.body.gift[0]}-${req.body.gift[1]}`,
+        gift : `${req.body.gift[0]}:${req.body.gift[1]}`,
         type : req.body.type,
         giveandtake : req.body.giveandtake
     })

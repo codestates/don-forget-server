@@ -40,10 +40,10 @@ export async function signup (req:Request, res:Response) {
             password_answer: password_answer,
             PasswordQuestionId: password_question_id?.getDataValue('id')
           })
-          .then(result => res.status(201).json(result))
+          .then(result => res.status(201).send({ "message" : "completely signed up" }))
         }
         createUser();
       }
     })
-    .catch(err => res.status(404).send(err));
+    .catch(err => res.status(409).send(err));
 }
