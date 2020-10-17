@@ -89,10 +89,11 @@ export async function signin (req:Request, res:Response) {
     //암호화 된 비밀번호와 db의 암호를 비교해서 틀리면 401을 보내고
     //맞으면 필요한 정보를 보낸다.
     await bcrypt.compare(password, websiteUser?.getDataValue('password'), (err, result) => {
-      if(err) {
+      if(err || !result) {
         console.log(err);
         res.status(401).send("Unauthorized-not-correct-password")
-      } else {
+      } 
+      else {
         // result = true;
         async function findUser() {
           console.log("user:", websiteUser?.getDataValue('id'))
