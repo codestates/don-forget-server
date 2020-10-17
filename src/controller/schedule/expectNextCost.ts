@@ -32,8 +32,20 @@ export async function expectNextCost (req:Request, res:Response) {
         ],
         attributes : ['date', 'event_target' , 'gift' ,'giveandtake' , 'type']
     })
+    .then(result => {
+        let next_month_expenditure_money = 0;
+        let next_month_give_gift = 0;
+        result.rows.forEach(element => {
+            if(element.gift.split(':')[0] === "현금"){
+                next_month_expenditure_money += parseInt(element.gift.split(':')[1]);
+            }else{
+                next_month_give_gift += 1;
+            }
+        })
+
+        const arr = [ result.count, next_month_expenditure_money, next_month_give_gift ];
+        res.send(arr);
+
+    })
     .catch(err => console.error(err));
-    
-    //3. 필요한 컬럼들을 뽑아오기
-    res.send(result);
 }
