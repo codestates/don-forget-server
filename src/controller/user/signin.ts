@@ -89,35 +89,29 @@ export async function signin (req:Request, res:Response) {
     //암호화 된 비밀번호와 db의 암호를 비교해서 틀리면 401을 보내고
     //맞으면 필요한 정보를 보낸다.
     await bcrypt.compare(password, websiteUser?.getDataValue('password'), (err, result) => {
-      if(err) {
+      if(err || !result) {
         console.log(err);
-        res.status(401).send("Unauthorized")
-      } else {
+        res.status(401).send("Unauthorized-not-correct-password")
+      } 
+      else {
         // result = true;
-        (async function findUser() {
-          const user = await User.findOne({
-            where: {
-              email: email
-            }
-          })
-          if(user === null) {
-            res.status(401).send("Unauthorized")
-          } else {
-            console.log("user:", user?.getDataValue('id'))
-            console.log("session:", session)
-            session.userid = user?.getDataValue('id');
-            session.name = user?.getDataValue('name');
-            session.email = user?.getDataValue('email');
-            session.password_answer = user?.getDataValue('password_answer');
-            session.save(function () {
-              res.status(200).json({
-                "id": user?.getDataValue('id'),
-                "name": user?.getDataValue('name'),
-                "email": user?.getDataValue('email')
-              })
+        async function findUser() {
+          console.log("user:", websiteUser?.getDataValue('id'))
+          console.log("session:", session)
+          session.userid = websiteUser?.getDataValue('id');
+          session.name = websiteUser?.getDataValue('name');
+          session.email = websiteUser?.getDataValue('email');
+          session.password_answer = websiteUser?.getDataValue('password_answer');
+          session.save(function () {
+            res.setHeader('content-type', 'application/json');
+            res.status(200).json({
+              "id": websiteUser?.getDataValue('id'),
+              "name": websiteUser?.getDataValue('name'),
+              "email": websiteUser?.getDataValue('email')
             })
-          }
-        })();
+          })
+        };
+        findUser()
       }
     })
   }
