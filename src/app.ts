@@ -42,8 +42,8 @@ app.use(
     //testing --start
     store: sessionStorage,
     cookie: {
-      domain : 'https://don-forget-server.com',
-      expires : new Date(Date.now() + (20000)),
+      domain : 'https://don-forget.com',
+      // expires : new Date(Date.now() + (20000)),
       secure: false,
       // secure : true
     }
