@@ -3,11 +3,10 @@ import userRouter from "./router/userRouter";
 import scheduleRouter from "./router/scheduleRouter";
 import searchRouter from "./router/searchRouter";
 import naverRouter from "./router/naverRouter";
-import { database } from './config/database';
-import { User } from './models/user';
 import { Event } from './models/event-type';
-import { Password_Question } from './models/password-question';
 import { Schedule } from './models/schedule';
+import { User } from './models/user';
+import { Password_Question } from './models/password-question';
 const app = express();
 const session = require('express-session');
 const cors = require('cors')
@@ -66,24 +65,11 @@ app.get('/', (request:Request, response:Response, next: NextFunction) => {
 app.listen(5000,async ()=>{
   console.log('start');
   try {
-    await database.authenticate();
-    console.log('Connection has been established successfully.');
-    await User.findAll()
-          .then(result => console.log('User connected'))
-          .catch(err => console.error(err));
-
-    await Event.findAll()
-    .then(result => console.log('Event connected'))
-    .catch(err => console.error(err));
-
-    await Password_Question.findAll()
-    .then(result => console.log('Password_Question connected'))
-    .catch(err => console.error(err));
-
-    await Schedule.findAll()
-    .then(result => console.log('Schedule connected'))
-    .catch(err => console.error(err));
-
+    //모든 데이터를 찾는 과부하를 대체하기 위해 연결로 대체
+    await Event.sync();
+    await Schedule.sync();
+    await User.sync();
+    await Password_Question.sync();
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }

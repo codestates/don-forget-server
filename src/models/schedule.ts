@@ -30,7 +30,7 @@ Schedule.init(
           allowNull: false,
         },
         gift: {
-          type: new DataTypes.STRING(128),
+          type: new DataTypes.STRING(256),
           allowNull: false,
         },
         type: {

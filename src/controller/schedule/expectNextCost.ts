@@ -5,7 +5,7 @@ import { Schedule } from '../../models/schedule';
 //Ex, 현재 2020년이면 2020년의 지출, 들어온 돈 내역을 월 단위로 나누어서 제공해준다.
 //schedule 탭 gitt 세분화 필요. 선물타입이 돈인지 무엇인지에 따라 기입하는 방법을 나누는 것이 필요할 것 같다.
 //expectNextCost에서도 원활한 사용 위해
-
+type find_rows_and_count = void | { rows : Schedule[] } | { count: number; };
 export async function expectNextCost (req:Request, res:Response) {
     //현시점의 다음달 '월'을 파악한다.
     //ex) 2020-10-02 ---> 11월 데이터 제공
@@ -17,7 +17,7 @@ export async function expectNextCost (req:Request, res:Response) {
     const next_month_end = new Date(date_now.getFullYear(), date_now.getMonth()+2 , 1);
 
     //2. 다음달 기간과 user_id에 매칭되는 스케줄들을 배열로 가져와 보내준다.
-    const schedule_list = await Schedule.findAll({
+    const result:find_rows_and_count = await Schedule.findAndCountAll({
         where : {
             UserId : req.params.id,
             date : {
@@ -29,7 +29,23 @@ export async function expectNextCost (req:Request, res:Response) {
         },
         order : [
             ['date', 'ASC']
-        ]
-    }).catch(err => console.error(err));
-    res.send(schedule_list);
+        ],
+        attributes : ['date', 'event_target' , 'gift' ,'giveandtake' , 'type']
+    })
+    .then(result => {
+        let next_month_expenditure_money = 0;
+        let next_month_give_gift = 0;
+        result.rows.forEach(element => {
+            if(element.gift.split(':')[0] === "현금"){
+                next_month_expenditure_money += parseInt(element.gift.split(':')[1]);
+            }else{
+                next_month_give_gift += 1;
+            }
+        })
+
+        const arr = [ result.count, next_month_expenditure_money, next_month_give_gift ];
+        res.send(arr);
+
+    })
+    .catch(err => console.error(err));
 }
