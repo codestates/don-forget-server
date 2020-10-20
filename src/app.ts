@@ -43,7 +43,7 @@ app.use(
     store: sessionStorage,
     cookie: {
       domain : 'https://don-forget.com',
-      expires : new Date(Date.now() + (20000)),
+      // expires : new Date(Date.now() + (20000)),
       secure: false,
       // secure : true
     }

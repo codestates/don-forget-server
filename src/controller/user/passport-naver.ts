@@ -8,13 +8,16 @@ const config = require('../../../config.json');
 
 export async function naverLogin(req:Request, res:Response){
   // const session = req!.session!
-  passport.serializeUser((user:any, done:any) => {
-    console.log("serializeUser", user)
-    done(null, user);
-  });
+  passport.serializeUser(function(user:any, done:any) {
+    console.log("세션에 기록하기")
+    done(null, {
+       id: user["id"],
+       email: user["email"]
+    });
+ });
 
   passport.deserializeUser((user:any, done:any) => {
-    User.findByPk(user)
+    console.log("세션에서 사용자 정보 읽기")
     done(null, user);
   });
 

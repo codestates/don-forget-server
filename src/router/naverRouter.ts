@@ -7,16 +7,16 @@ const passport = require('passport');
 
 naverRouter.get('/naver', passport.authenticate('naver'), 
   (req:Request, res:Response) => {
-    res.cookie('session_id', "id")
+    // res.cookie('id', 'id')
     res.send();
   },
 );
 
-naverRouter.get('/home', passport.authenticate('naver', { failureRedirect: '/naver'}),
+naverRouter.get('/naver/callback', passport.authenticate('naver', { failureRedirect: '/naver'}),
   (req:Request, res:Response) => {
     console.log('-----------req:', req.cookies)
-    res.cookie('session_id', "id", { sameSite: 'none', secure: true, httpOnly: false})
-    res.redirect('http://localhost:3000/home')
+    res.cookie('id', 'id')
+    res.redirect('https://don-forget.com/home')
   }
 );
 
