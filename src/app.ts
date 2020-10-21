@@ -2,6 +2,7 @@ import express, {Request, Response, NextFunction} from 'express';
 import userRouter from "./router/userRouter";
 import scheduleRouter from "./router/scheduleRouter";
 import searchRouter from "./router/searchRouter";
+import giftRouter from './router/giftRouter';
 import { Event } from './models/event-type';
 import { Schedule } from './models/schedule';
 import { User } from './models/user';
@@ -23,21 +24,6 @@ const options = {
   database: process.env.DB_NAME
 };
 const sessionStorage = new mysqlStore(options);
-const acceptDomainLIst = [
-  'https://www.don-forget.com',
-  'http://localhost:3000'
-];
-
-// const corsOptions = {
-//   origin: function (origin:string, callback:Function) {
-//     if (acceptDomainLIst.indexOf(origin) !== -1) {      
-//       callback(null, true)
-//       cors
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }
 
 app.use(cookieparser());
 app.use(bodyparser.json());
@@ -64,21 +50,10 @@ app.use(
 app.use("/user", userRouter);
 app.use("/schedule", scheduleRouter);
 app.use("/search", searchRouter);
-
+app.use("/gift", giftRouter)
 app.get('/', (request:Request, response:Response, next: NextFunction) => {
   response.send('hello');
 });
-
-// //passport 데이터 확인용
-// app.get("/debug", (req:Request, res:Response) => {
-//   res.json({
-//     "req.session": req.session,
-//     "req.user": req.user,
-
-//     // passport 정보를 들여다 보자
-//     "req._passport": req._passport,
-//   })
-// })
 
 app.listen(5000,async ()=>{
   console.log('start');
