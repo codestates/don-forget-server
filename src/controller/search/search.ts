@@ -11,6 +11,7 @@ import { Schedule } from '../../models/schedule';
 export async function search (req:Request, res:Response) {
   
   const { data } = req.body;
+  console.log("data:", data);
   const id = req.params.id;
 
   const find_type = await Schedule.findOne({
@@ -18,8 +19,10 @@ export async function search (req:Request, res:Response) {
       type: data
     }
   })
-  
-  if(find_type) {
+
+  if(data === "") {
+    res.status(200).send([])
+  } else if(find_type) {
     await Schedule.findAll({
       where: {
         UserId: id,
