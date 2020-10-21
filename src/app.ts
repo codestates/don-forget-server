@@ -2,7 +2,6 @@ import express, {Request, Response, NextFunction} from 'express';
 import userRouter from "./router/userRouter";
 import scheduleRouter from "./router/scheduleRouter";
 import searchRouter from "./router/searchRouter";
-import naverRouter from "./router/naverRouter";
 import { Event } from './models/event-type';
 import { Schedule } from './models/schedule';
 import { User } from './models/user';
@@ -13,9 +12,6 @@ const cors = require('cors')
 const cookieparser = require('cookie-parser');
 const bodyparser = require('body-parser');
 const dotenv = require('dotenv');
-const passport = require('passport');
-const passportConfig = require('./controller/user/passport-naver');
-passportConfig.naverLogin();
 dotenv.config();
 
 const mysqlStore = require('express-mysql-session')(session);
@@ -65,13 +61,9 @@ app.use(
     // --end
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use("/user", userRouter);
 app.use("/schedule", scheduleRouter);
 app.use("/search", searchRouter);
-app.use("/oauth", naverRouter);
 
 app.get('/', (request:Request, response:Response, next: NextFunction) => {
   response.send('hello');
