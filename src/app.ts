@@ -7,6 +7,7 @@ import { Event } from './models/event-type';
 import { Schedule } from './models/schedule';
 import { User } from './models/user';
 import { Password_Question } from './models/password-question';
+import { Gift } from './models/gift-review';
 const app = express();
 const session = require('express-session');
 const cors = require('cors')
@@ -63,6 +64,7 @@ app.listen(5000,async ()=>{
     await Schedule.sync();
     await User.sync();
     await Password_Question.sync();
+    await Gift.sync();
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
