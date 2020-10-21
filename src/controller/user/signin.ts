@@ -14,62 +14,41 @@ export async function signin (req:Request, res:Response) {
   const session = req!.session!;
   
   //소셜로그인의 경우
-  //소셜로그인이라면 req.body.socialLogin에 'kakao'나 'naver'기입
-  if(email[0] === 'kakao' || email[0] === 'naver'){
+  if(email[0] === 'google'){
     const socialUser = await User.findOne({
       where: {
         email: `${email[0]}-${email[1]}`
       }
     })
-    //패스워드는 자신 이메일 기반으로 만듦
-    await bcrypt.hash(email[0], 10)
-    .then(async (result) => {
-      if(socialUser === null){
-        async function createUser() {
-          await User.create({
-            name: name,
-            email: `${email[0]}-${email[1]}`,
-            password: result
-          })
-        }
-        await createUser();
-      }
-    })
-    .then(async () => {
-      await bcrypt.compare(email[0], socialUser?.getDataValue('password'), (err, result) => {
-        if(err) {
-          console.log(err);
-          res.status(401).send("Unauthorized")
-        } else {
-          // result = true;
-          (async function findUser() {
-            const user = await User.findOne({
-              where: {
-                email: `${email[0]}-${email[1]}`
-              }
-            })
-            if(user === null) {
-              res.status(401).send("Unauthorized")
-            } else {
-              console.log("user:", user?.getDataValue('id'))
-              console.log("session:", session)
-              session.userid = user?.getDataValue('id');
-              session.name = user?.getDataValue('name');
-              session.email = user?.getDataValue('email');
-              session.password_answer = user?.getDataValue('password_answer');
-              session.save(function () {
-                res.setHeader('content-type', 'application/json');
-                res.status(200).json({
-                  "id": user?.getDataValue('id'),
-                  "name": user?.getDataValue('name'),
-                  "email": user?.getDataValue('email')
-                })
-              })
-            }
-          })();
-        }
+    
+    if(socialUser === null) {
+      const newUser = await User.create({
+        email: `${email[0]}-${email[1]}`,
+        name: name
       })
-    })
+      session.userid = newUser?.getDataValue('id');
+      session.name = newUser?.getDataValue('name');
+      session.email = newUser?.getDataValue('email');
+      session.save(function() {
+        res.status(200).json({
+          "id": newUser?.getDataValue('id'),
+          "name": newUser?.getDataValue('name'),
+          "email": newUser?.getDataValue('email'),
+        });
+      })
+    }
+    else {
+      session.userid = socialUser?.getDataValue('id');
+      session.name = socialUser?.getDataValue('name');
+      session.email = socialUser?.getDataValue('email');
+      session.save(function() {
+        res.status(200).json({
+          "id": socialUser?.getDataValue('id'),
+          "name": socialUser?.getDataValue('name'),
+          "email": socialUser?.getDataValue('email'),
+        });
+      })
+    }
   }
   //일반로그인의 경우
   else{
