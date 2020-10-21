@@ -14,7 +14,7 @@ export async function signin (req:Request, res:Response) {
   const session = req!.session!;
   
   //소셜로그인의 경우
-  if(email[0] === 'google'){
+  if(email[0] === 'google' || email[0] === 'facebook'){
     const socialUser = await User.findOne({
       where: {
         email: `${email[0]}-${email[1]}`
