@@ -1,0 +1,26 @@
+{
+    "config" : {
+        "target" : "https://don-forget-server.com",
+        "phases" : [
+            {"duration": 60, "arrivalRate": 50}
+        ],
+        "default" : {
+            "headers": {
+                "User-Agent": "Artillery"
+            }
+        },
+        "payload": {
+            "path": "./GiftApiTestData.csv",
+            "fields": ["product"]
+        }
+    },
+    "scenarios": [
+        {
+          "name": "Gift API Test",
+          "flow": [
+            { "get" : { "url" : "/gift/recommandGift" } },
+            { "get" : { "url" : "/gift/imoticonList" } }
+          ]
+        }
+    ]
+}

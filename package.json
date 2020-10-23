@@ -9,7 +9,9 @@
     "build": "tsc -p .",
     "migrate": "npm run build && node_modules/.bin/sequelize db:migrate --env development",
     "migrate:undo": "npm run build && node_modules/.bin/sequelize db:migrate:undo --env development",
-    "migrate:undo:all": "npm run build && node_modules/.bin/sequelize db:migrate:undo:all --env development"
+    "migrate:undo:all": "npm run build && node_modules/.bin/sequelize db:migrate:undo:all --env development",
+    "test:GiftAPI" : "./node_modules/artillery/bin/artillery run -o ./Report/GiftReport.json ./Test/GiftApiTest.yml",
+    "report:GiftAPI" : "./node_modules/artillery/bin/artillery report ./Report/GiftReport.json"
   },
   "repository": {
     "type": "git",
@@ -44,6 +46,7 @@
     "@types/mysql2": "github:types/mysql2",
     "@types/sequelize": "^4.28.9",
     "@types/validator": "^13.1.0",
+    "artillery": "^1.6.1",
     "axios": "^0.20.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
