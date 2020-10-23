@@ -21,7 +21,7 @@ const find = (req:Request, res:Response) => {
     //   var api_url = 'https://openapi.naver.com/v1/search/blog.xml?query=' + encodeURI(req.query.query); // xml 결과
     const query:any = req.query.text;
     console.log('query : ',query);
-    const api_url = `https://openapi.naver.com/v1/search/shop.json?query=`+encodeURI(query)+'&display=120'; // json 결과
+    const api_url = `https://openapi.naver.com/v1/search/shop.json?query=`+encodeURI(query)+'&display=100'; // json 결과
     console.log('api_url : ',api_url);
     const options = {
         headers: {'X-Naver-Client-Id': client_id, 'X-Naver-Client-Secret': client_secret}
