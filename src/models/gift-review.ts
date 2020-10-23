@@ -17,6 +17,7 @@ export class Gift extends Model {
     public category3 : string | undefined;;
     public category4 : string | undefined;;
     public clickCount : number | undefined;
+    public link : string | undefined;
 }
 
 Gift.init(
@@ -27,6 +28,10 @@ Gift.init(
             primaryKey : true
         },
         title : {
+            type : DataTypes.STRING,
+            allowNull : false
+        },
+        link : {
             type : DataTypes.STRING,
             allowNull : false
         },
