@@ -29,11 +29,6 @@ async function get (req:Request, res:Response) {
 //version1 compelte
 //나중에 params랑 session 비교하는 것도 넣자
 async function post (req:Request, res:Response) {
-    // const event = await Event.findOne({
-    //     where : {
-    //         type : req.body.event_type
-    //     }
-    // })
     const newSchedule = await Schedule.create({
         date : req.body.date,
         event_target : req.body.event_target,
@@ -59,13 +54,6 @@ async function put (req:Request, res:Response) {
         }
     })
     console.log('schedule : ',schedule);
-
-    //스케줄 찾은 후 해당 스케줄의 event_type에 맞는 event table의 id값 가져오기
-    // const event = await Event.findOne({
-    //     where: {
-    //         type : req.body.event_type
-    //     }
-    // })
     
     //date,event_target,gift, EventId
     await schedule?.update({

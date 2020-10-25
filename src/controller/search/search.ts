@@ -8,10 +8,23 @@ import { Schedule } from '../../models/schedule';
 2. 검색어가 경조사 타입이라면, schedule table에서 (UserId = req.params.id && Event_id = 경조사 타입)인 row 정보를 다 보내준다.
 */
 
+interface Data{
+  id : number,
+  data : object,
+  event_target : string,
+  giveandtake : string,
+  type : string,
+  gift : object
+}
+
+
 export async function search (req:Request, res:Response) {
   
   const { data } = req.body;
   console.log("data:", data);
+  if(data === "") {
+    res.status(200).send([])
+  }
   const id = req.params.id;
 
   const find_type = await Schedule.findOne({
@@ -19,38 +32,37 @@ export async function search (req:Request, res:Response) {
       type: data
     }
   })
-
-  if(data === "") {
-    res.status(200).send([])
-  } else if(find_type) {
-    await Schedule.findAll({
+  
+  let schedule;
+  if(find_type) {
+    schedule = await Schedule.findAll({
       where: {
         UserId: id,
         type: find_type?.getDataValue('type')
       }
     })
-    .then(data => {
-      if (data.length !== 0) {
-        res.status(200).send(data);
-      } else {
-        res.send(data);
-      }
-    })
-  } else if(find_type === null) {
-    await Schedule.findAll({
+    
+  } 
+  else{
+    schedule = await Schedule.findAll({
       where: {
         UserId: id,
         event_target: {[Op.like]: `%${data}%`}
       }
     })
-    .then(data => {
-      if(data.length !== 0) {
-        res.status(200).send(data);
-      } else {
-        res.send(data);
-      }
-    })
-  } else {
-    res.send(data);
+  }  
+  let arr: Array<Data> = [];
+  for (let i = 0; i < schedule.length; i++) {
+    const element = schedule[i]
+    const obj:Data = {
+      id : element.getDataValue('id'),
+      data : element.getDataValue('data'),
+      event_target : element.getDataValue('event_target'),
+      giveandtake : element.getDataValue('giveandtake'),
+      type : element.getDataValue('type'),
+      gift : [element.getDataValue('gift').split(':')[0], element.getDataValue('gift').split(':')[1]]
+    };
+    arr.push(obj);
   }
+  res.status(200).send(arr);
 }
