@@ -10,7 +10,7 @@ import { Schedule } from '../../models/schedule';
 
 interface Data{
   id : number,
-  data : object,
+  date : string,
   event_target : string,
   giveandtake : string,
   type : string,
@@ -54,9 +54,10 @@ export async function search (req:Request, res:Response) {
   let arr: Array<Data> = [];
   for (let i = 0; i < schedule.length; i++) {
     const element = schedule[i]
+    const Day:Date = new Date(element.getDataValue('date'))
     const obj:Data = {
       id : element.getDataValue('id'),
-      data : element.getDataValue('data'),
+      date : `${Day.getFullYear()}-${Day.getMonth()+1}-${Day.getDate()}`,
       event_target : element.getDataValue('event_target'),
       giveandtake : element.getDataValue('giveandtake'),
       type : element.getDataValue('type'),
