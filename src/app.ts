@@ -8,6 +8,7 @@ import { Schedule } from './models/schedule';
 import { User } from './models/user';
 import { Password_Question } from './models/password-question';
 import { Gift } from './models/gift-review';
+
 const app = express();
 const session = require('express-session');
 const cors = require('cors')
@@ -48,6 +49,7 @@ app.use(
     // --end
   })
 );
+// app.use("/static", express.static(__dirname + 'http://localhost:3000/public'));
 app.use("/user", userRouter);
 app.use("/schedule", scheduleRouter);
 app.use("/search", searchRouter);
