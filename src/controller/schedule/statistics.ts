@@ -1,5 +1,5 @@
 import { Request,Response } from 'express';
-import { Op } from 'sequelize';
+import { Op, DataTypes } from 'sequelize';
 import { Schedule } from '../../models/schedule';
 //1년 단위로 데이터 제공
 //Ex, 현재 2020년이면 2020년의 지출, 들어온 돈 내역을 월 단위로 나누어서 제공해준다.
@@ -29,7 +29,8 @@ export async function statistics (req:Request, res:Response) {
                     [Op.gte] : this_year_start,
                     [Op.lt] : this_year_end
                 }
-            }
+            },
+            giveandtake : 'give'
         },
         order : [
             ['date', 'ASC']
